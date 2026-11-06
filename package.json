@@ -1,0 +1,11 @@
+{
+  "name": "rice-planner",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Prioritize a roadmap with RICE, a capacity cut line, and a Monte Carlo stability check.",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test"
+  }
+}

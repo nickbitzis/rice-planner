@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RICE Planner</title>
+  <meta name="description" content="Prioritize a roadmap with RICE scores, a capacity cut line, and a check on how stable the plan is.">
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>RICE Planner</h1>
+      <p class="sub">Score initiatives, fund what fits this quarter, and see which decisions depend on shaky estimates.</p>
+    </div>
+    <div class="actions">
+      <button type="button" id="share">Copy share link</button>
+      <button type="button" id="copy-md" class="ghost">Copy as Markdown</button>
+      <button type="button" id="export" class="ghost">Export CSV</button>
+      <label class="ghost button">Import CSV<input type="file" id="import" accept=".csv,text/csv" hidden></label>
+      <button type="button" id="reset" class="ghost">Load sample</button>
+    </div>
+  </header>
+
+  <main class="stack">
+    <ul id="warnings" class="warnings" aria-live="polite"></ul>
+    <div id="cards" class="cards"></div>
+
+    <section class="panel">
+      <div class="chart-head">
+        <h2>Initiatives</h2>
+        <label class="inline">Team capacity this quarter
+          <input type="number" id="capacity" min="0.5" step="0.5"> person-months
+        </label>
+      </div>
+      <div class="table-scroll">
+        <table class="items edit">
+          <thead>
+            <tr>
+              <th>Initiative</th>
+              <th class="num" title="People or accounts affected per quarter">Reach</th>
+              <th>Impact</th>
+              <th>Confidence</th>
+              <th class="num" title="Person-months">Effort</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="edit-rows"></tbody>
+        </table>
+      </div>
+      <button type="button" id="add" class="ghost small">Add initiative</button>
+    </section>
+
+    <section class="two">
+      <div class="panel">
+        <div class="chart-head">
+          <h2>Ranked plan</h2>
+          <ul class="legend">
+            <li><i class="swatch s-funded"></i>Funded</li>
+            <li><i class="swatch s-cut"></i>Below the line</li>
+          </ul>
+        </div>
+        <div class="table-scroll">
+          <table class="items rank">
+            <thead><tr><th class="num">#</th><th>Initiative</th><th>RICE score</th><th class="num">Effort</th><th>Chance funded</th></tr></thead>
+            <tbody id="rank-rows"></tbody>
+          </table>
+        </div>
+        <p class="hint">Chance funded comes from 2,000 simulated quarters. Reach and effort vary around each estimate, more for low confidence, and effort tends to run over. Each run re-ranks and re-cuts the list. Items marked <b>contested</b> are worth a better estimate before you commit.</p>
+      </div>
+
+      <div class="panel">
+        <div class="chart-head">
+          <h2>Value against effort</h2>
+          <ul class="legend">
+            <li><i class="swatch s-funded"></i>Funded</li>
+            <li><i class="swatch s-cut"></i>Below the line</li>
+          </ul>
+        </div>
+        <div class="chart-wrap">
+          <svg id="chart" role="img" aria-label="Scatter plot of value against effort for each initiative"></svg>
+          <div id="tooltip" class="tooltip" hidden></div>
+        </div>
+        <p class="hint">Value is reach x impact x confidence. Dashed lines are the medians, which split the board into quick wins, big bets, fill-ins, and money pits.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">Runs entirely in your browser. Your list is kept in the page URL and in this browser, and nothing is uploaded.</footer>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
